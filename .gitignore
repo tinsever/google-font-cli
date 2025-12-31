@@ -35,4 +35,4 @@ test/
 
 .DS_Store
 *.zip
-*.tar.gz
+*.tar

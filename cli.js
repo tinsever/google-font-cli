@@ -11,20 +11,40 @@ const pjson = require("./package.json");
 const fontList = new GoogleFontList();
 const program = new Command();
 
+program.option("--refresh-cache", "Refresh the cached Google font list");
+
+const splitFamilies = (familyArgs) =>
+  familyArgs
+    .join(" ")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+const getFontByNameAsync = (term) =>
+  new Promise((resolve, reject) => {
+    fontList.getFontByName(term, (err, filtered) => {
+      if (err) return reject(err);
+      resolve(filtered);
+    });
+  });
+
 /**
  * Helper to wrap fontList initialization in a Promise
  */
-const ensureFontsLoaded = () =>
-  new Promise((resolve) => {
-    if (fontList.loaded) return resolve();
-    console.log(pc.bold(pc.blue("\nDownloading Google Font List...\n")));
-    fontList.on("success", resolve);
-    fontList.on("error", (err) => {
-      console.error(pc.bold(pc.red("Error loading font list!")));
-      console.error(pc.red(err.toString()));
-      process.exit(1);
-    });
-  });
+const ensureFontsLoaded = async (refreshCache = false) => {
+  if (refreshCache) {
+    fontList.loaded = false;
+    console.log(pc.bold(pc.blue("\nRefreshing Google Font List cache...\n")));
+  }
+  if (fontList.loaded) return;
+  try {
+    await fontList.load(refreshCache);
+  } catch (err) {
+    console.error(pc.bold(pc.red("Error loading font list!")));
+    console.error(pc.red(err.toString()));
+    process.exit(1);
+  }
+};
 
 program.version(pjson.version);
 
@@ -32,7 +52,8 @@ program
   .command("search [family...]")
   .description("Search for a font family")
   .action(async (family) => {
-    await ensureFontsLoaded();
+    const refresh = program.opts().refreshCache;
+    await ensureFontsLoaded(refresh);
     const term = family ? family.join(" ") : "";
     fontList.searchFontByName(term, printFontList);
   });
@@ -45,18 +66,37 @@ program
   .option("--ttf", "Download TTF format (default)")
   .option("--woff2", "Download WOFF2 format")
   .action(async (family, options) => {
-    await ensureFontsLoaded();
-    const term = family.join(" ");
+    const refresh = program.opts().refreshCache;
     const variants = options.variants ? options.variants.split(",") : false;
     const format = options.woff2 ? "woff2" : "ttf";
+    const families = splitFamilies(family);
 
-    fontList.getFontByName(term, (err, filteredList) => {
-      if (err || filteredList.data.length !== 1) {
-        handleMatchError("Download", term, err);
-        return;
+    try {
+      await ensureFontsLoaded(refresh);
+      let allResults = [];
+
+      for (const term of families) {
+        try {
+          const filteredList = await getFontByNameAsync(term);
+          if (filteredList.data.length !== 1) {
+            handleMatchError("Download", term, null);
+            continue;
+          }
+          const font = filteredList.getFirst();
+          const result = await font.saveAtAsync(variants, options.dest, format);
+          allResults = allResults.concat(result);
+        } catch (err) {
+          handleMatchError("Download", term, err);
+        }
       }
-      filteredList.getFirst().saveAt(variants, options.dest, format, printResult);
-    });
+
+      if (allResults.length > 0) {
+        printResult(null, allResults);
+      }
+    } catch (err) {
+      console.error(pc.red(err.toString()));
+      process.exit(1);
+    }
   });
 
 program
@@ -64,17 +104,36 @@ program
   .description("Install a font family to the system")
   .option("-v, --variants <variants>", "Variants separated by comma")
   .action(async (family, options) => {
-    await ensureFontsLoaded();
-    const term = family.join(" ");
+    const refresh = program.opts().refreshCache;
     const variants = options.variants ? options.variants.split(",") : false;
+    const families = splitFamilies(family);
 
-    fontList.getFontByName(term, (err, filteredList) => {
-      if (err || filteredList.data.length !== 1) {
-        handleMatchError("Installation", term, err);
-        return;
+    try {
+      await ensureFontsLoaded(refresh);
+      let allResults = [];
+
+      for (const term of families) {
+        try {
+          const filteredList = await getFontByNameAsync(term);
+          if (filteredList.data.length !== 1) {
+            handleMatchError("Installation", term, null);
+            continue;
+          }
+          const font = filteredList.getFirst();
+          const result = await font.installAsync(variants);
+          allResults = allResults.concat(result);
+        } catch (err) {
+          handleMatchError("Installation", term, err);
+        }
       }
-      filteredList.getFirst().install(variants, printResult);
-    });
+
+      if (allResults.length > 0) {
+        printResult(null, allResults);
+      }
+    } catch (err) {
+      console.error(pc.red(err.toString()));
+      process.exit(1);
+    }
   });
 
 program
@@ -82,7 +141,8 @@ program
   .description("Copy Google Fonts stylesheet link to clipboard")
   .option("-v, --variants <variants>", "Variants separated by comma")
   .action(async (family, options) => {
-    await ensureFontsLoaded();
+    const refresh = program.opts().refreshCache;
+    await ensureFontsLoaded(refresh);
     const term = family.join(" ");
     const variants = options.variants ? options.variants.split(",") : false;
 
