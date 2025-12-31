@@ -63,13 +63,13 @@ describe('Request', () => {
 	describe('_getProperLibrary', () => {
 		it('should return https for https URLs', () => {
 			const request = new Request('https://example.com');
-			const lib = request._getProperLibray({ protocol: 'https:' });
+			const lib = request._getProperLibrary({ protocol: 'https:' });
 			expect(lib).toBe(https);
 		});
 
 		it('should return http for http URLs', () => {
 			const request = new Request('http://example.com');
-			const lib = request._getProperLibray({ protocol: 'http:' });
+			const lib = request._getProperLibrary({ protocol: 'http:' });
 			expect(lib).toBe(http);
 		});
 	});

@@ -170,10 +170,10 @@ export interface RequestInstance {
   _mimeType?: MimeTypeResult;
   req?: import('http').ClientRequest;
   mimeType: boolean | MimeTypeResult;
-  _fisrtBytes: boolean;
+  _firstBytes: boolean;
   
   init(uri: string): void;
-  _getProperLibray(uri: URL): typeof import('http') | typeof import('https');
+  _getProperLibrary(uri: URL): typeof import('http') | typeof import('https');
   handleResponse(res: import('http').IncomingMessage, originalUri: string): void;
   handleError(error: Error): void;
   getMimeType(): MimeTypeResult | undefined;
