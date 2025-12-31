@@ -107,11 +107,14 @@ program
             continue;
           }
           const font = filteredList.getFirst();
-          if (font) {
-            const result = await font.saveAtAsync(variants, options.dest, format);
-            allResults = allResults.concat(result);
-            successCount++;
+          if (!font) {
+            handleMatchError("Download", term, null);
+            failCount++;
+            continue;
           }
+          const result = await font.saveAtAsync(variants, options.dest, format);
+          allResults = allResults.concat(result);
+          successCount++;
         } catch (err) {
           handleMatchError("Download", term, /** @type {Error} */ (err));
           failCount++;
@@ -163,11 +166,14 @@ program
             continue;
           }
           const font = filteredList.getFirst();
-          if (font) {
-            const result = await font.installAsync(variants);
-            allResults = allResults.concat(result);
-            successCount++;
+          if (!font) {
+            handleMatchError("Installation", term, null);
+            failCount++;
+            continue;
           }
+          const result = await font.installAsync(variants);
+          allResults = allResults.concat(result);
+          successCount++;
         } catch (err) {
           handleMatchError("Installation", term, /** @type {Error} */ (err));
           failCount++;
