@@ -12,10 +12,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tinsever/google-font-installer"
+    "url": "https://github.com/tinsever/google-font-cli"
   },
   "bugs": {
-    "url": "https://github.com/tinsever/google-font-installer/issues"
+    "url": "https://github.com/tinsever/google-font-cli/issues"
   },
   "license": "MIT",
   "keywords": [
