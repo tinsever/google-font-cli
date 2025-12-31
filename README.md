@@ -5,14 +5,16 @@ Google Font CLI
 
 > This tool uses [google-webfonts-helper](https://gwfh.mranftl.com/) to access Google Fonts without requiring an API key.
 
-Google Font CLI is a NodeJS module/CLI that lets you Search, Download and Install fonts offered by Google Web Fonts.
+Google Font CLI is a NodeJS module/CLI that lets you Search, Download and Install fonts offered by Google Fonts.
 
 You can use it in two ways:
 - install the module system wide and use the Command Line Interface (CLI)
 - require the module in your project and use the APIs
 
 ### Table of content
-
+- [Install](#install)
+	- [npm](#npm)
+	- [homebrew](#homebrew-using-tap)
 - [CLI](#cli)
 	- [Search a font](#search-a-font)
 	- [Download a font](#download-a-font)
@@ -31,19 +33,29 @@ You can use it in two ways:
 
 
 <br>
-###### Font installation footnote
+
+## Font installation footnote
 In Linux and OSX, the font will be installed in the user's font directory (~/.fonts for Linux, ~/Library/Fonts for OSX).
 In Windows, due to the fact that font installation require some register modifications, I prefered to create a little WScript (a windows script that use ActiveX windows interface) and spawn a `cscript` process to install the font in a _'windows native way'_.
 
+# Installation
+You can install gfcli using...
+## npm
+or anything that can access npm such as bun!
+```bash
+$ npm install -g google-font-cli
+````
+
+## homebrew using tap
+```bash
+$ brew tap tinsever/google-font-cli
+$ brew install gfcli
+```
+
+
 # CLI
 
-First of all you have to install google-font-cli in your system
-
-```
-$ npm install -g google-font-cli
-```
-
-Now, from your terminal emulator, you can use the command `gfcli`
+From your terminal emulator, you can use the command `gfcli`
 
 ### Search a font
 
