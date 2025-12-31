@@ -6,8 +6,7 @@ This project provides security updates for the following versions:
 
 | Version | Supported          |
 | ------- | ----------------- |
-| 2.0.0   | ✅ |
-| 1.2.2 | :x: |
+| 2.2.0   | ✅ |
 
 
 ## Reporting a Vulnerability
