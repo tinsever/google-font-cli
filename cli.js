@@ -2,13 +2,14 @@
 
 "use strict";
 
-const program = require("commander");
+const { Command } = require("commander");
 const pc = require("picocolors");
 const ncp = require("copy-paste-win32fix");
 const GoogleFontList = require("./lib/google-font-list");
 const pjson = require("./package.json");
 
 const fontList = new GoogleFontList();
+const program = new Command();
 
 program.option("--refresh-cache", "Refresh the cached Google font list");
 
