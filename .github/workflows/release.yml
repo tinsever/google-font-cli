@@ -1,4 +1,4 @@
-name: Publish and Bump Homebrew
+name: Release
 
 on:
   push:
@@ -10,7 +10,40 @@ permissions:
   contents: write   # Required to create the GitHub Release
 
 jobs:
+  test:
+    name: Test on Multiple Platforms
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [18.x, 20.x, 22.x]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run typecheck
+        run: npm run typecheck
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Test CLI installation
+        run: |
+          npm install -g .
+          gfcli --version
+
   release:
+    name: Publish to npm
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,16 +52,25 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '25'
+          node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
       - run: npm ci
 
-      - name: Run tests
-        run: npm test
-
       - name: Publish to NPM
-        run: npm publish --provenance
+        run: |
+          TAG="${{ github.ref_name }}"
+
+          if [[ "${TAG}" == *"-alpha"* || "${TAG}" == *"-beta"* || "${TAG}" == *"-rc"* ]]; then
+            echo "Publishing pre-release to @next tag"
+            npm publish --provenance --tag next
+          elif [[ "${TAG}" == *"-support"* || "${TAG}" == *"-maintenance"* ]]; then
+            echo "Publishing maintenance release to npm tag: ${TAG}"
+            npm publish --provenance --tag "${TAG}"
+          else
+            echo "Publishing stable release to @latest"
+            npm publish --provenance
+          fi
         
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
