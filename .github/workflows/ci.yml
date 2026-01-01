@@ -30,10 +30,12 @@ jobs:
         run: npm run typecheck
       
       - name: Setup fonts directory
-        run: mkdir -p ~/.local/share/fonts
+        run: |
+          mkdir -p -v ~/.local/share/fonts
+          mkdir -p -v ~/Library/Fonts
       
       - name: Run tests
-        run: npm test
+        run: npm test -- --runInBand
       
       - name: Test CLI installation
         run: |
@@ -42,5 +44,5 @@ jobs:
       
       - name: Upload coverage to Codecov (Node 20 only)
         if: matrix.node-version == '20.x'
-        run: npm run test:coverage
+        run: npm run test:coverage -- --runInBand
         continue-on-error: true

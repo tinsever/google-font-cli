@@ -33,12 +33,17 @@ jobs:
       - name: Run typecheck
         run: npm run typecheck
       
-      - name: Setup fonts directory (Linux)
-        if: runner.os == 'Linux'
-        run: mkdir -p ~/.local/share/fonts
+      - name: Setup fonts directory
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            mkdir -p -v ~/.local/share/fonts
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            mkdir -p -v ~/Library/Fonts
+          fi
+        shell: bash
       
       - name: Run tests
-        run: npm test
+        run: npm test -- --runInBand
       
       - name: Test CLI installation
         run: |
