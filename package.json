@@ -1,6 +1,6 @@
 {
   "name": "google-font-cli",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Fork of google-font-installer with bug fixes and maintenance updates",
   "author": "Tin Sever <mail@tin-sever.de>",
   "contributors": [
@@ -25,22 +25,30 @@
     "install",
     "cli"
   ],
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "typecheck": "tsc"
+  },
   "dependencies": {
-    "async": "^1.5.2",
-    "colors": "^1.1.2",
-    "commander": "^2.20.3",
+    "commander": "^12.1.0",
     "copy-paste-win32fix": "^1.4.0",
-    "file-type": "^3.6.0",
+    "file-type": "^19.6.0",
     "ink": "^6.6.0",
     "ink-select-input": "^6.2.0",
     "ink-text-input": "^6.0.0",
-    "mv": "^2.1.1",
-    "ora": "^9.0.0",
+    "ora": "^5.4.1",
     "pascal-case": "^1.1.2",
     "picocolors": "^1.1.1",
     "react": "^19.2.3"
   },
   "optionalDependencies": {
     "node-powershell": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "jest": "^30.2.0",
+    "typescript": "^5.7.0"
   }
 }
