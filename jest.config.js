@@ -9,5 +9,9 @@ module.exports = {
   coverageReporters: ['text', 'lcov', 'html'],
   verbose: true,
   testTimeout: 10000,
-  maxWorkers: 1
+  maxWorkers: 1,
+  // Allow Jest to transform ESM packages from node_modules
+  transformIgnorePatterns: [
+    'node_modules/(?!(pascal-case|no-case|lower-case|upper-case)/)'
+  ]
 };

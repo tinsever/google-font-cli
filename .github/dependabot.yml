@@ -29,6 +29,10 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    # Pin packages that have incompatible major versions
+    ignore:
+      - dependency-name: "pascal-case"
+        update-types: ["version-update:semver-major"]
     
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
