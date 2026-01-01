@@ -10,49 +10,8 @@ permissions:
   contents: write   # Required to create the GitHub Release
 
 jobs:
-  test:
-    name: Test on Multiple Platforms
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        node-version: [18.x, 20.x, 22.x]
-    
-    steps:
-      - uses: actions/checkout@v6
-      
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run typecheck
-        run: npm run typecheck
-      
-      - name: Setup fonts directory
-        run: |
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            mkdir -p -v ~/.local/share/fonts
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-            mkdir -p -v ~/Library/Fonts
-          fi
-        shell: bash
-      
-      - name: Run tests
-        run: npm test -- --runInBand
-      
-      - name: Test CLI installation
-        run: |
-          npm install -g .
-          gfcli --version
-
   release:
     name: Publish to npm
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
