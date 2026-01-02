@@ -7,6 +7,31 @@
 
 /* Font Faces */
 @font-face {
+    font-family: "Playfair Display";
+    src: url("fonts/PlayfairDisplay-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Playfair Display";
+    src: url("fonts/PlayfairDisplay-600.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Playfair Display";
+    src: url("fonts/PlayfairDisplay-italic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+}
+@font-face {
+    font-family: "Playfair Display";
+    src: url("fonts/PlayfairDisplay-600italic.woff2") format("woff2");
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
     font-family: "Inter";
     src: url("fonts/Inter-regular.ttf") format("truetype");
     font-weight: 400;
@@ -304,10 +329,17 @@ main {
 
 .terminal-header {
     background: #1a1a1a;
-    padding: 12px 16px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #222;
+    height: 44px;
+}
+
+.dots {
     display: flex;
     gap: 8px;
-    border-bottom: 1px solid #222;
 }
 
 .dot {
@@ -320,9 +352,48 @@ main {
 .yellow { background: #ffbd2e; }
 .green { background: #27c93f; }
 
+.terminal-tabs {
+    display: flex;
+    height: 100%;
+}
+
+.term-tab {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0 1.5rem;
+    height: 100%;
+    border-left: 1px solid #222;
+    transition: all 0.2s;
+}
+
+.term-tab:last-child {
+    border-right: 1px solid #222;
+}
+
+.term-tab:hover {
+    color: #aaa;
+    background: #222;
+}
+
+.term-tab.active {
+    color: var(--text);
+    background: #111;
+    border-bottom: 1px solid #111; /* Hide bottom border to blend with body */
+    margin-bottom: -1px; /* Overlap border */
+}
+
 .terminal-body {
+    display: none;
     padding: 2rem;
     color: #d4d4d4;
+}
+
+.terminal-body.active {
+    display: block;
 }
 
 .line {

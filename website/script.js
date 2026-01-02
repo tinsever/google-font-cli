@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Tab Switching
-    const tabs = document.querySelectorAll('.tab-btn');
+    // Install Tab Switching
+    const installTabs = document.querySelectorAll('.install-tabs:not(.demo-tabs) .tab-btn');
     const cmdContainers = document.querySelectorAll('.cmd-container');
     const feedback = document.querySelector('.copy-feedback');
 
-    tabs.forEach(tab => {
+    installTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            // Remove active class from all tabs
-            tabs.forEach(t => t.classList.remove('active'));
+            // Remove active class from all install tabs
+            installTabs.forEach(t => t.classList.remove('active'));
             // Add active class to clicked tab
             tab.classList.add('active');
 
@@ -16,6 +16,26 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Show target container
             const targetId = `cmd-${tab.dataset.target}`;
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
+
+    // Demo Tab Switching
+    const demoTabs = document.querySelectorAll('.term-tab');
+    const demoBodies = document.querySelectorAll('.terminal-body');
+
+    demoTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all demo tabs
+            demoTabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            tab.classList.add('active');
+
+            // Hide all demo bodies
+            demoBodies.forEach(b => b.classList.remove('active'));
+            
+            // Show target body
+            const targetId = `demo-${tab.dataset.demoTarget}`;
             document.getElementById(targetId).classList.add('active');
         });
     });

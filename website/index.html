@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Font CLI // The Professional Typography Tool</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,6 +11,7 @@
     <nav>
         <div class="logo">GFCLI</div>
         <div class="links">
+            <a href="https://github.com/tinsever/google-font-cli#documentation">Docs</a>
             <a href="https://www.npmjs.com/package/google-font-cli">NPM</a>
             <a href="https://github.com/tinsever/google-font-cli" class="star-btn">Star on GitHub <span class="star">★</span></a>
         </div>
@@ -65,11 +63,17 @@
             <h2 class="section-title">Workflow</h2>
             <div class="terminal-window">
                 <div class="terminal-header">
-                    <span class="dot red"></span>
-                    <span class="dot yellow"></span>
-                    <span class="dot green"></span>
+                    <div class="dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <div class="terminal-tabs">
+                        <button class="term-tab active" data-demo-target="install">Install</button>
+                        <button class="term-tab" data-demo-target="download">Download</button>
+                    </div>
                 </div>
-                <div class="terminal-body">
+                <div class="terminal-body active" id="demo-install">
                     <div class="line"><span class="prompt">➜</span> <span class="cmd">gfcli search "open sans"</span></div>
                     <div class="line output">Search results for: "open sans"</div>
                     <br>
@@ -84,6 +88,11 @@
                     <div class="line output">Open Sans variant 600 processed: /Users/tinsever/Library/Fonts/OpenSans-600.ttf</div>
                     <div class="line output">...</div>
                     <div class="line success">✓ Font installed successfully!</div>
+                </div>
+                <div class="terminal-body" id="demo-download">
+                    <div class="line"><span class="prompt">➜</span> <span class="cmd">gfcli download "Open Sans" -v 300 --woff2</span></div>
+                    <br>
+                    <div class="line output">Open Sans variant 300 processed: /Users/tinsever/Code/google-font-installer/OpenSans-300.woff2</div>
                 </div>
             </div>
         </section>
