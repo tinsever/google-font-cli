@@ -25,6 +25,10 @@ You can use it in two ways:
 # Quick start
 After installing it via [npm](#npm) or [homebrew tap](#homebrew-using-tap) you can use the CLI!
 ```bash
+# 1. Download
+$ npm install -g google-font-cli
+
+# 2. Install a font!
 $ gfcli install "Open Sans" -v regular,700
 ```
 
